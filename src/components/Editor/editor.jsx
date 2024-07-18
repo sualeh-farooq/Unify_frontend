@@ -51,34 +51,39 @@
 // }
 
 
-"use client"
-import React, { useState } from 'react';
-import ReactQuill from 'react-quill';
+"use client";
+import React, { useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import 'react-quill/dist/quill.snow.css';
 
-export default function Editor({value , setValue}) {
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false });
 
-  const modules = {
-    toolbar: [
-      [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-      [{size: []}],
-      ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-      [{'list': 'ordered'}, {'list': 'bullet'}, 
-       {'indent': '-1'}, {'indent': '+1'}],
-      ['link', 'image', 'video', 'code-block'], // Added 'code-block' for code button
-      ['clean']
-    ],
-  };
+export default function Editor({ value, setValue }) {
+  const [modules, setModules] = useState(null);
 
-  // const [value, setValue] = useState('');
+  useEffect(() => {
+    setModules({
+      toolbar: [
+        [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
+        [{ size: [] }],
+        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+        [{ 'list': 'ordered' }, { 'list': 'bullet' },
+        { 'indent': '-1' }, { 'indent': '+1' }],
+        ['link', 'image', 'video', 'code-block'], // Added 'code-block' for code button
+        ['clean']
+      ],
+    });
+  }, []);
+
+  if (!modules) return null;
 
   return (
-    <ReactQuill 
-      className='mt-3' 
-      theme="snow" 
+    <ReactQuill
+      className='mt-3'
+      theme="snow"
       modules={modules} // Pass the modules object, not modules.toolbarOptions
-      value={value} 
-      onChange={setValue} 
+      value={value}
+      onChange={setValue}
     />
   );
 }

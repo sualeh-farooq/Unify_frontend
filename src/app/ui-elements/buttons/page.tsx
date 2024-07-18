@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const Buttons = () => {
   return (
-    <DefaultLayout>
+    <DefaultLayout pageTitle="Buttons" >
       <Breadcrumb pageName="Buttons" />
 
       {/* <!-- Normal Button Items --> */}
@@ -25,25 +25,25 @@ const Buttons = () => {
           <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-20">
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-primary text-white px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-primary text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-primary text-white rounded-full px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="border border-primary text-primary rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
             />
           </div>
@@ -51,25 +51,25 @@ const Buttons = () => {
           <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-20">
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-green text-white px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-green text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-green text-white rounded-full px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="border border-green text-green rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
             />
           </div>
@@ -77,25 +77,25 @@ const Buttons = () => {
           <div className="flex flex-wrap gap-5 xl:gap-20">
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-dark text-white px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-dark text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="bg-dark text-white rounded-full px-10 py-3.5 lg:px-8 xl:px-10"
             />
 
             <ButtonDefault
               label="Button"
-              link="/"
+              
               customClasses="border border-dark text-dark rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
             />
           </div>
@@ -114,7 +114,7 @@ const Buttons = () => {
           <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-primary text-white py-[11px] px-6"
             >
               <svg
@@ -136,7 +136,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-green text-white py-[11px] px-6"
             >
               <svg
@@ -158,7 +158,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-dark text-white py-[11px] px-6"
             >
               <svg
@@ -180,7 +180,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="border border-primary text-primary py-[11px] px-6"
             >
               <svg
@@ -204,7 +204,7 @@ const Buttons = () => {
           <div className="mb-7.5 flex flex-wrap gap-5 xl:gap-7.5">
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-primary rounded-[5px] text-white py-[11px] px-6"
             >
               <svg
@@ -226,7 +226,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-green rounded-[5px] text-white py-[11px] px-6"
             >
               <svg
@@ -248,7 +248,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-dark rounded-[5px] text-white py-[11px] px-6"
             >
               <svg
@@ -270,7 +270,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="border rounded-[5px] border-primary text-primary py-[11px] px-6"
             >
               <svg
@@ -294,7 +294,7 @@ const Buttons = () => {
           <div className="flex flex-wrap gap-5 xl:gap-7.5">
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-primary rounded-full text-white py-[11px] px-6"
             >
               <svg
@@ -316,7 +316,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-green rounded-full text-white py-[11px] px-6"
             >
               <svg
@@ -338,7 +338,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="bg-dark rounded-full text-white py-[11px] px-6"
             >
               <svg
@@ -360,7 +360,7 @@ const Buttons = () => {
 
             <ButtonDefault
               label="Button With Icon"
-              link="/"
+              
               customClasses="border rounded-full border-primary text-primary py-[11px] px-6"
             >
               <svg

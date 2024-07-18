@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 const Settings = () => {
   return (
-    <DefaultLayout>
+    <DefaultLayout pageTitle='charts'>
       <div className="mx-auto w-full max-w-[1080px]">
         <Breadcrumb pageName="Settings" />
 

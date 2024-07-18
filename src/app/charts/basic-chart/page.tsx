@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 
 const BasicChartPage: React.FC = () => {
   return (
-    <DefaultLayout>
+    <DefaultLayout pageTitle='charts'>
       <Breadcrumb pageName="Basic Chart" />
 
       <BasicChart />

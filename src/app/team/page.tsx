@@ -128,7 +128,6 @@ const Settings = () => {
                             <div>
                                 <ButtonDefault
                                     label="New Broker"
-                                    link="#dummy"
                                     customClasses="active-sidebar-menu hover:bg-red text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
                                 />
                             </div>
