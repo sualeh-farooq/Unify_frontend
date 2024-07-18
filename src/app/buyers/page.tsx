@@ -1,35 +1,24 @@
 
 "use client"
 import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
-import { Metadata } from "next";
+// import { Metadata } from "next";
 import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import SettingBoxes from "@/components/SettingBoxes";
 import ButtonDefault from "@/components/Buttons/ButtonDefault";
-import { MdEditSquare } from "react-icons/md";
-import { HiDotsVertical } from "react-icons/hi";
 import DropdownDefault from "@/components/Dropdowns/DropdownDefault";
 
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
-
-function classNames(...classes: any[]) {
-    return classes.filter(Boolean).join(' ')
-}
 
 
 
 
-const metadata: Metadata = {
-    title: "Next.js Settings Page | NextAdmin - Next.js Dashboard c",
-    description: "This is Next.js Settings page for NextAdmin Dashboard Kit",
-};
+// const metadata: Metadata = {
+//     title: "Next.js Settings Page | NextAdmin - Next.js Dashboard c",
+//     description: "This is Next.js Settings page for NextAdmin Dashboard Kit",
+// };
 
 const Settings = () => {
 
     const actionDropdown = [
-
-
-
         {
             icon: <svg
                 className="fill-current"
@@ -91,7 +80,7 @@ const Settings = () => {
     ]
     return (
         <>
-            <DefaultLayout pageTitle="Buyers">
+            <DefaultLayout pageTitle="Buyers" children={undefined}>
                 <div className="mx-auto w-full ">
                     {/* <Breadcrumb pageName="Listings" /> */}
                     <div className="grid grid-rows gap-4">
@@ -99,7 +88,6 @@ const Settings = () => {
                             <div>
                                 <ButtonDefault
                                     label="New Buyer"
-                                    link="#dummy"
                                     customClasses="active-sidebar-menu hover:bg-red text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
                                 />
                             </div>
@@ -175,7 +163,7 @@ const Settings = () => {
 
                                             <ButtonDefault
                                                 label="Download"
-                                                link="/"
+
                                                 customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
                                             />
                                         </td>
@@ -211,7 +199,6 @@ const Settings = () => {
 
                                             <ButtonDefault
                                                 label="Download"
-                                                link="/"
                                                 customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
                                             />
                                         </td>
@@ -247,7 +234,7 @@ const Settings = () => {
 
                                             <ButtonDefault
                                                 label="Download"
-                                                link="/"
+
                                                 customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
                                             />
                                         </td>
@@ -320,7 +307,7 @@ const Settings = () => {
 
                                             <ButtonDefault
                                                 label="Download"
-                                                link="/"
+
                                                 customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
                                             />
                                         </td>
@@ -332,64 +319,64 @@ const Settings = () => {
                                     <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
 
-<th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-    Devone Lane
-</th>
-<td className="px-6 py-3 border">
-    devon@gmail.com
-</td>
-<td className="px-6 py-3 border">
-    2345678
-</td>
-<td className="px-6 py-3 border" >
+                                        <th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
+                                            Devone Lane
+                                        </th>
+                                        <td className="px-6 py-3 border">
+                                            devon@gmail.com
+                                        </td>
+                                        <td className="px-6 py-3 border">
+                                            2345678
+                                        </td>
+                                        <td className="px-6 py-3 border" >
 
-    John Henry
-</td>
+                                            John Henry
+                                        </td>
 
-<td className="px-6 py-3 border" >
+                                        <td className="px-6 py-3 border" >
 
-    <ButtonDefault
-        label="Download"
-        link="/"
-        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-    />
-</td>
+                                            <ButtonDefault
+                                                label="Download"
 
-<td className="px-6 py-3 border" >
-    <DropdownDefault actions={actionDropdown} />
-</td>
-</tr>
-<tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
+                                            />
+                                        </td>
+
+                                        <td className="px-6 py-3 border" >
+                                            <DropdownDefault actions={actionDropdown} />
+                                        </td>
+                                    </tr>
+                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
 
-<th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-    Devone Lane
-</th>
-<td className="px-6 py-3 border">
-    devon@gmail.com
-</td>
-<td className="px-6 py-3 border">
-    2345678
-</td>
-<td className="px-6 py-3 border" >
+                                        <th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
+                                            Devone Lane
+                                        </th>
+                                        <td className="px-6 py-3 border">
+                                            devon@gmail.com
+                                        </td>
+                                        <td className="px-6 py-3 border">
+                                            2345678
+                                        </td>
+                                        <td className="px-6 py-3 border" >
 
-    John Henry
-</td>
+                                            John Henry
+                                        </td>
 
-<td className="px-6 py-3 border" >
+                                        <td className="px-6 py-3 border" >
 
-    <ButtonDefault
-        label="Download"
-        link="/"
-        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-    />
-</td>
+                                            <ButtonDefault
+                                                label="Download"
+                                                link="/"
+                                                customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
+                                            />
+                                        </td>
 
-<td className="px-6 py-3 border" >
-    <DropdownDefault actions={actionDropdown} />
-</td>
-</tr>
-                                    
+                                        <td className="px-6 py-3 border" >
+                                            <DropdownDefault actions={actionDropdown} />
+                                        </td>
+                                    </tr>
+
 
                                 </tbody>
                             </table>
