@@ -80,7 +80,7 @@ const Settings = () => {
     ]
     return (
         <>
-            <DefaultLayout pageTitle="Buyers" children={undefined}>
+            <DefaultLayout pageTitle="Buyers" >
                 <div className="mx-auto w-full ">
                     {/* <Breadcrumb pageName="Listings" /> */}
                     <div className="grid grid-rows gap-4">
