@@ -11,7 +11,7 @@ export default function Dropdown() {
         <Menu as="div" className="relative inline-block text-left">
 <div>
   <MenuButton className="inline-flex w-full action_dropdown ">
-    <HiDotsVertical />
+    {/* <HiDotsVertical /> */}
     <ChevronDownIcon className="-mr-1 h-5 w-5 text-gray-400" aria-hidden="true" />
   </MenuButton>
 </div>
