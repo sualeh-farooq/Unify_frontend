@@ -7,7 +7,7 @@ import "@/css/satoshi.css";
 import "@/css/style.css";
 import React, { useEffect, useState } from "react";
 import Loader from "@/components/common/Loader";
-
+import StoreProvider from "./StoreProvider"
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -25,7 +25,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body suppressHydrationWarning={true}>
+        <StoreProvider>
         {loading ? <Loader /> : children}
+        </StoreProvider>
       </body>
     </html>
   );

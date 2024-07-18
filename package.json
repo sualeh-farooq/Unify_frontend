@@ -1,5 +1,5 @@
 {
-  "name": "free-nextadmin-nextjs",
+  "name": "unify_commercial_frontend",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -12,6 +12,7 @@
     "@ckeditor/ckeditor5-react": "^8.0.0",
     "@headlessui/react": "^2.1.1",
     "@heroicons/react": "^2.1.4",
+    "@reduxjs/toolkit": "^2.2.6",
     "antd": "^5.19.1",
     "apexcharts": "^3.45.2",
     "axios": "^1.7.2",
@@ -32,6 +33,7 @@
     "react-filepond": "^7.1.2",
     "react-icons": "^5.2.1",
     "react-quill": "^2.0.0",
+    "react-redux": "^9.1.2",
     "react-select": "^5.8.0",
     "react-table": "^7.8.0",
     "react-toastify": "^10.0.5",

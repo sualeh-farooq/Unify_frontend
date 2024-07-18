@@ -21,6 +21,17 @@ async function pageData() {
 }
 
 
+interface Seller {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  business: string;
+  interest: string;
+  broker: number;
+  sellerType: string;
+  __v: number;
+}
 interface Listing {
   _id: string;
   dealName: string;
@@ -40,6 +51,7 @@ interface Listing {
   agencyAgreement: string;
   im: string;
   status: string;
+  sellerDetails: Seller; 
 }
 
 interface ListingsComponentProps {
@@ -136,21 +148,43 @@ const Settings = () => {
   ]
   // const [listings, setListings] = useState([])
   const [listings, setListings] = useState<Listing[]>([])
-  const [pending, setPending] = useState<Listing[]>([])
-  const [active, setActive] = useState<Listing[]>([])
-  const [sold, setSold] = useState<Listing[]>([])
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     const fetchListingData = async () => {
+      setIsLoading(true)
       const listingData = await pageData()
       console.log(`Listings Fetch Succesfully`)
       setListings(listingData.data)
+      setIsLoading(false)
       console.log(listingData.data)
     }
     fetchListingData()
   }, [])
 
 
+
+
+  const downloadFile = (fileName:string) => {
+    fetch(`${baseURL}/files/${fileName}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/pdf',
+      },
+    })
+      .then((response) => {
+        response.blob().then((blob) => {
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link:any = document.createElement('a');
+          link.href = url;
+          link.setAttribute('download', fileName); 
+          document.body.appendChild(link);
+          link.click();
+          link.parentNode.removeChild(link);
+        });
+      })
+      .catch((error) => console.error('Error downloading the file:', error));
+  };
 
 
 
@@ -170,10 +204,7 @@ const Settings = () => {
                   Add New Listing
                 </Link>
 
-                {/* <button onClick={()=>console.log(pendingListings)} >Pending listings</button> */}
-                {/* <button onClick={()=>console.log(soldListings)} >Sold listings</button> */}
-                {/* <button onClick={()=>console.log(activeListings)} >Active listings</button> */}
-
+             
               </div>
 
             </div>
@@ -190,160 +221,53 @@ const Settings = () => {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
 
-                    <th scope="col" className="px-6 py-3 border border-left-primary">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	 border-left-primary">
                       Deal
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Asking Price
 
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Commision
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Marketing Funds
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Contact
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Agreement
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       IM
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Revenue
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       EBITDA
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Industry
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {/* <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
 
-                    <th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Barone
-                    </th>
-                    <td className="px-6 py-3 border">
-                      $50,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      $45,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      $45,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      Devone Lane
-                    </td>
-                    <td className="px-6 py-3 border" >
+                  {
+                    isLoading ? (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
-                      <ButtonDefault
-                        label="Download"
-                        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                      />
-                    </td>
-                    <td className="px-6 py-3 border" >
-
-                      <ButtonDefault
-                        label="Download"
-                        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                      />
-                    </td>
-                    <td className="px-6 py-3 border" > $950.00</td>
-                    <td className="px-6 py-3 border" > $567.0</td>
-                    <td className="px-6 py-3 border" > Industry</td>
-                    <td className="px-6 py-3 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-                    <th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Barone
-                    </th>
-                    <td className="px-6 py-3 border">
-                      $50,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      $45,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      $45,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      Devone Lane
-                    </td>
-                    <td className="px-6 py-3 border" >
-
-                      <ButtonDefault
-                        label="Download"
-                        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                      />
-                    </td>
-                    <td className="px-6 py-3 border" >
-
-                      <ButtonDefault
-                        label="Download"
-                        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                      />
-                    </td>
-                    <td className="px-6 py-3 border" > $950.00</td>
-                    <td className="px-6 py-3 border" > $567.0</td>
-                    <td className="px-6 py-3 border" > Industry</td>
-                    <td className="px-6 py-3 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-                    <th scope="row" className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Barone
-                    </th>
-                    <td className="px-6 py-3 border">
-                      $50,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      $45,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      $45,000
-                    </td>
-                    <td className="px-6 py-3 border">
-                      Devone Lane
-                    </td>
-                    <td className="px-6 py-3 border" >
-
-                      <ButtonDefault
-                        label="Download"
-                        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                      />
-                    </td>
-                    <td className="px-6 py-3 border" >
-
-                      <ButtonDefault
-                        label="Download"
-                        customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                      />
-                    </td>
-                    <td className="px-6 py-3 border" > $950.00</td>
-                    <td className="px-6 py-3 border" > $567.0</td>
-                    <td className="px-6 py-3 border" > Industry</td>
-                    <td className="px-6 py-3 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr> */}
+                        <td className="px-6 py-3 border whitespace-nowrap	 text-center" colSpan={10} > <b>Loading .......</b>  </td>
+                      </tr>
+                    ) : null
+                  }
 
                   {
                     listings
@@ -352,17 +276,25 @@ const Settings = () => {
                         console.log(list);
                         return (
                           <tr key={list._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >{list.dealName}</td>
-                            <td className="px-6 py-3 border" >{list.askingPrice}</td>
-                            <td className="px-6 py-3 border" >{list.commision}</td>
-                            <td className="px-6 py-3 border" >{list.marketingFunds}</td>
-                            <td className="px-6 py-3 border" >{list.seller}</td>
-                            <td className="px-6 py-3 border" ></td>
-                            <td className="px-6 py-3 border" ></td>
-                            <td className="px-6 py-3 border" >{list.revenue}</td>
-                            <td className="px-6 py-3 border" >{list.ebitda}</td>
-                            <td className="px-6 py-3 border" >{list.industry}</td>
-                            <td className="px-6 py-3 border" >
+                            <td className="px-6 py-3 border whitespace-nowrap	 font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >{list.dealName}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.askingPrice}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.commision}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.marketingFunds}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.sellerDetails.name}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	"> 
+                            <button onClick={()=>downloadFile(list.agencyAgreement)} type="button" className="btn-primary-light bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">
+                              Download
+                            </button>
+                                </td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >
+                            <button  onClick={()=>downloadFile(list.im)} type="button" className="btn-primary-light bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">
+                              Download
+                            </button>
+                            </td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.revenue}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.ebitda}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.industry}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >
                               <DropdownDefault actions={actionDropdown} />
                             </td>
                           </tr>
@@ -391,42 +323,51 @@ const Settings = () => {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
 
-                    <th scope="col" className="px-6 py-3 border border-left-primary">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	 border-left-primary">
                       Deal
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Asking Price
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Commision
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Marketing Funds
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Contact
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Agreement
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       IM
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Revenue
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       EBITDA
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Industry
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody>
+                  {
+                    isLoading ? (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                        <td className="px-6 py-3 border whitespace-nowrap	 text-center" colSpan={10} > <b>Loading .......</b>  </td>
+                      </tr>
+                    ) : null
+                  }
+
                   {
                     listings
                       .filter((list) => list.status.toLocaleLowerCase() === 'active')
@@ -434,17 +375,25 @@ const Settings = () => {
                         console.log(list);
                         return (
                           <tr key={list._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >{list.dealName}</td>
-                            <td className="px-6 py-3 border" >{list.askingPrice}</td>
-                            <td className="px-6 py-3 border" >{list.commision}</td>
-                            <td className="px-6 py-3 border" >{list.marketingFunds}</td>
-                            <td className="px-6 py-3 border" >{list.seller}</td>
-                            <td className="px-6 py-3 border" ></td>
-                            <td className="px-6 py-3 border" ></td>
-                            <td className="px-6 py-3 border" >{list.revenue}</td>
-                            <td className="px-6 py-3 border" >{list.ebitda}</td>
-                            <td className="px-6 py-3 border" >{list.industry}</td>
-                            <td className="px-6 py-3 border" >
+                            <td className="px-6 py-3 border whitespace-nowrap	 font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >{list.dealName}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.askingPrice}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.commision}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.marketingFunds}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.sellerDetails.name}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	"> 
+                            <button  onClick={()=>downloadFile(list.agencyAgreement)} type="button" className="btn-primary-light bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">
+                              Download
+                            </button>
+                                </td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >
+                            <button  onClick={()=>downloadFile(list.im)} type="button" className="btn-primary-light bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">
+                              Download
+                            </button>
+                            </td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.revenue}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.ebitda}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.industry}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >
                               <DropdownDefault actions={actionDropdown} />
                             </td>
                           </tr>
@@ -469,42 +418,51 @@ const Settings = () => {
                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                   <tr>
 
-                    <th scope="col" className="px-6 py-3 border border-left-primary">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	 border-left-primary">
                       Deal
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Asking Price
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Commision
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Marketing Funds
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Contact
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Agreement
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       IM
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Revenue
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       EBITDA
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Industry
                     </th>
-                    <th scope="col" className="px-6 py-3 border">
+                    <th scope="col" className="px-6 py-3 border whitespace-nowrap	">
                       Actions
                     </th>
                   </tr>
                 </thead>
                 <tbody>
+                  {
+                    isLoading ? (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                        <td className="px-6 py-3 border whitespace-nowrap	 text-center" colSpan={10} > <b>Loading .......</b>  </td>
+                      </tr>
+                    ) : null
+                  }
+
                   {
                     listings
                       .filter((list) => list.status.toLocaleLowerCase() === 'sold')
@@ -512,17 +470,25 @@ const Settings = () => {
                         console.log(list);
                         return (
                           <tr key={list._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                            <td className="px-6 py-3 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >{list.dealName}</td>
-                            <td className="px-6 py-3 border" >{list.askingPrice}</td>
-                            <td className="px-6 py-3 border" >{list.commision}</td>
-                            <td className="px-6 py-3 border" >{list.marketingFunds}</td>
-                            <td className="px-6 py-3 border" >{list.seller}</td>
-                            <td className="px-6 py-3 border" ></td>
-                            <td className="px-6 py-3 border" ></td>
-                            <td className="px-6 py-3 border" >{list.revenue}</td>
-                            <td className="px-6 py-3 border" >{list.ebitda}</td>
-                            <td className="px-6 py-3 border" >{list.industry}</td>
-                            <td className="px-6 py-3 border" >
+                            <td className="px-6 py-3 border whitespace-nowrap	 font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >{list.dealName}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.askingPrice}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.commision}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.marketingFunds}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.sellerDetails.name}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	"> 
+                            <button  onClick={()=>downloadFile(list.agencyAgreement)} type="button" className="btn-primary-light bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">
+                              Download
+                            </button>
+                                </td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >
+                            <button  onClick={()=>downloadFile(list.im)} type="button" className="btn-primary-light bg-blue-700 hover:bg-blue-800  font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2  ">
+                              Download
+                            </button>
+                            </td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.revenue}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.ebitda}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >{list.industry}</td>
+                            <td className="px-6 py-3 border whitespace-nowrap	" >
                               <DropdownDefault actions={actionDropdown} />
                             </td>
                           </tr>

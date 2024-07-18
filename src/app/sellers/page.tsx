@@ -8,10 +8,12 @@ import { MdEditSquare } from "react-icons/md";
 import { HiDotsVertical } from "react-icons/hi";
 import DropdownDefault from "@/components/Dropdowns/DropdownDefault";
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from 'antd'
 import { ToastContainer } from "react-toastify";
 import SellerModal from "@/components/Modals/sellerModal"
+import baseURL from "@/config/serverConfig";
+import axios from "axios";
 
 
 const metadata: Metadata = {
@@ -19,8 +21,68 @@ const metadata: Metadata = {
   description: "This is Next.js Settings page for NextAdmin Dashboard Kit",
 };
 
+
+interface Seller {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  business: string;
+  interest: string;
+  broker: number;
+  sellerType: string;
+  __v: number;
+}
+
+async function sellerData() {
+  const response = await fetch(`${baseURL}/api/admin/getSeller`)
+  const result = response.json()
+  return result
+}
+
 const Settings = () => {
   const [sellerModal, setSellerModal] = useState(false)
+  const [sellers, setSellers] = useState<Seller[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+
+
+  useEffect(() => {
+    const fetchListings = async () => {
+      setIsLoading(true)
+      const sellers = await sellerData()
+      setSellers(sellers.data)
+      setIsLoading(false)
+      console.log(sellers.data)
+    }
+    fetchListings()
+  }, [])
+
+
+  const [dataFromChild, setDataFromChild] = useState("");
+  function handleDataFromChild(data: any) {
+    setDataFromChild(data);
+    console.log(data.data.data)
+    setSellers([...sellers, data.data.data]);
+  }
+
+  const deleteRow = async (e: any) => {
+    console.log('Delete')
+    let sellerId = e.target.parentNode.parentNode.parentNode.parentNode.parentNode.id
+    try {
+      const response = await axios.delete(`${baseURL}/api/admin/deletelisting/${sellerId}`)
+        .then(async (data) => {
+          console.log(data)
+          const sellers = await sellerData()
+          setSellers(sellers.data)
+        }).catch((err) => console.log(err))
+
+    } catch (error) {
+      console.log(error)
+
+    }
+  }
+
+
   const actionDropdown = [
 
     {
@@ -105,10 +167,15 @@ const Settings = () => {
         />
       </svg>,
       name: 'Delete',
+      func: deleteRow
+
 
     },
 
   ]
+
+
+
 
   return (
     <>
@@ -130,8 +197,6 @@ const Settings = () => {
               <h4 className="mb-5.5 text-body-2xlg font-extrabold text-primary">
                 Leads
               </h4>
-
-
 
               {/* <ModalComponent /> */}
 
@@ -165,87 +230,51 @@ const Settings = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {
+                    isLoading ? (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-3 border whitespace-nowrap	 text-center" colSpan={10} > <b>Loading .......</b>  </td>
+                      </tr>
+                    ) : null
+                  }
 
+                  {
+                    sellers.filter((list) => list.sellerType.toLowerCase() === 'leads')
+                      .map((val, index) => {
+                        return (
+                          <>
+                            <tr id={val._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                              <td className="px-6 py-3 border whitespace-nowrap	 font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >
+                                {val.name}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.email}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.phone}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.business}
+                              </td>
 
-                    <th scope="row" className="px-6 py-4 border border-left-primary font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                      Devone Lane
-                    </th>
-                    <td className="px-6 py-4 border">
-                      devon@gmail.com
-                    </td>
-                    <td className="px-6 py-4 border">
-                      2345678
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Accesories Business
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Automotive
-                    </td>
-                    <td className="px-6 py-4 border" >
+                              <td className="px-6 py-4 border">
+                                {val.interest}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.broker}
+                              </td>
+                              <td className="px-6 py-3 border whitespace-nowrap	" >
+                                <DropdownDefault seller_id={val._id} actions={actionDropdown} />
+                              </td>
 
-                      John Henry
-                    </td>
-
-                    <td className="px-6 py-4 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-                    <th scope="row" className="px-6 py-4 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Devone Lane
-                    </th>
-                    <td className="px-6 py-4 border">
-                      devon@gmail.com
-                    </td>
-                    <td className="px-6 py-4 border">
-                      2345678
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Accesories Business
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Automotive
-                    </td>
-                    <td className="px-6 py-4 border" >
-
-                      John Henry
-                    </td>
-
-                    <td className="px-6 py-4 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                            </tr>
+                          </>
+                        )
+                      })
+                  }
 
 
-                    <th scope="row" className="px-6 py-4 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Devone Lane
-                    </th>
-                    <td className="px-6 py-4 border">
-                      devon@gmail.com
-                    </td>
-                    <td className="px-6 py-4 border">
-                      2345678
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Accesories Business
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Automotive
-                    </td>
-                    <td className="px-6 py-4 border" >
-
-                      John Henry
-                    </td>
-
-                    <td className="px-6 py-4 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
 
                 </tbody>
               </table>
@@ -289,87 +318,41 @@ const Settings = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
+                  {
+                    sellers.filter((list) => list.sellerType.toLowerCase() === 'active')
+                      .map((val, index) => {
+                        return (
+                          <>
+                            <tr id={val._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                              <td className="px-6 py-3 border whitespace-nowrap	 font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary" >
+                                {val.name}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.email}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.phone}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.business}
+                              </td>
 
-                    <th scope="row" className="px-6 py-4 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Devone Lane
-                    </th>
-                    <td className="px-6 py-4 border">
-                      devon@gmail.com
-                    </td>
-                    <td className="px-6 py-4 border">
-                      2345678
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Accesories Business
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Automotive
-                    </td>
-                    <td className="px-6 py-4 border" >
+                              <td className="px-6 py-4 border">
+                                {val.interest}
+                              </td>
+                              <td className="px-6 py-4 border">
+                                {val.broker}
+                              </td>
+                              <td className="px-6 py-3 border whitespace-nowrap	" >
+                                <DropdownDefault actions={actionDropdown} />
+                              </td>
 
-                      John Henry
-                    </td>
-
-                    <td className="px-6 py-4 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-                    <th scope="row" className="px-6 py-4 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Devone Lane
-                    </th>
-                    <td className="px-6 py-4 border">
-                      devon@gmail.com
-                    </td>
-                    <td className="px-6 py-4 border">
-                      2345678
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Accesories Business
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Automotive
-                    </td>
-                    <td className="px-6 py-4 border" >
-
-                      John Henry
-                    </td>
-
-                    <td className="px-6 py-4 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-                    <th scope="row" className="px-6 py-4 border font-medium text-gray-900 whitespace-nowrap dark:text-white border-left-primary">
-                      Devone Lane
-                    </th>
-                    <td className="px-6 py-4 border">
-                      devon@gmail.com
-                    </td>
-                    <td className="px-6 py-4 border">
-                      2345678
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Accesories Business
-                    </td>
-                    <td className="px-6 py-4 border">
-                      Automotive
-                    </td>
-                    <td className="px-6 py-4 border" >
-
-                      John Henry
-                    </td>
-
-                    <td className="px-6 py-4 border" >
-                      <DropdownDefault actions={actionDropdown} />
-                    </td>
-                  </tr>
+                            </tr>
+                          </>
+                        )
+                      })
+                  }
 
                 </tbody>
               </table>
@@ -380,8 +363,19 @@ const Settings = () => {
         </div>
 
 
-        <SellerModal modalOpen={sellerModal} setModalOpen={() => setSellerModal(!sellerModal)} />
-        <ToastContainer />
+        <SellerModal sendDataToParent={handleDataFromChild} modalOpen={sellerModal} setModalOpen={() => setSellerModal(!sellerModal)} />
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        />
 
 
 

@@ -102,8 +102,7 @@ export default function NewListing() {
                                 <ButtonDefault
                                     label="Save Listing"
                                     functionClick={checkCover}
-                                    link=""
-                                    cl="active-sidebar-menu hover:bg-red text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
+                                    customClasses="active-sidebar-menu hover:bg-red text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
                                 />
                                 <Link
                                     href="/listings"
