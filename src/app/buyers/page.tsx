@@ -367,7 +367,7 @@ const Settings = () => {
 
                                             <ButtonDefault
                                                 label="Download"
-                                                link="/"
+                                               
                                                 customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
                                             />
                                         </td>
