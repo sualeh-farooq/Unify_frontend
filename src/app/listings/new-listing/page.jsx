@@ -16,7 +16,7 @@ async function getPageData() {
     return result
 }
 
-export default function NewListing({ result }) {
+export default function NewListing() {
 
     const [dealName, setDealName] = useState('')
     const [status , setStatus] = useState('')
