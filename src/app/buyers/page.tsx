@@ -6,7 +6,9 @@ import DefaultLayout from "@/components/Layouts/DefaultLaout";
 import SettingBoxes from "@/components/SettingBoxes";
 import ButtonDefault from "@/components/Buttons/ButtonDefault";
 import DropdownDefault from "@/components/Dropdowns/DropdownDefault";
-
+import BuyerModal from '@/components/Modals/buyerModal'
+import { useState } from "react";
+import SellerModal from "@/components/Modals/sellerModal";
 
 
 
@@ -17,6 +19,8 @@ import DropdownDefault from "@/components/Dropdowns/DropdownDefault";
 // };
 
 const Settings = () => {
+
+    const [buyerModal , setBuyerModal] = useState(false)
 
     const actionDropdown = [
         {
@@ -78,6 +82,11 @@ const Settings = () => {
         },
 
     ]
+
+
+    const catchData = async () =>{
+
+    }
     return (
         <>
             <DefaultLayout pageTitle="Buyers" >
@@ -87,6 +96,7 @@ const Settings = () => {
                         <div className="pb-3 border-b flex justify-between" >
                             <div>
                                 <ButtonDefault
+                                functionClick={()=>setBuyerModal(!buyerModal)}
                                     label="New Buyer"
                                     customClasses="active-sidebar-menu hover:bg-red text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
                                 />
@@ -385,6 +395,23 @@ const Settings = () => {
 
                     </div>
                 </div>
+
+<BuyerModal modalOpen={buyerModal} sendDataToParent={catchData} setModalOpen={()=>setBuyerModal(!buyerModal)} />
+
+{/* 
+                <SellerModal  modalOpen={sellerModal} setModalOpen={() => setSellerModal(!sellerModal)} />
+        <ToastContainer
+          position="top-center"
+          autoClose={2000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+          theme="light"
+        /> */}
             </DefaultLayout >
         </>
     );

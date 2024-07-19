@@ -318,6 +318,14 @@ const Settings = () => {
                   </tr>
                 </thead>
                 <tbody>
+                {
+                    isLoading ? (
+                      <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                        <td className="px-6 py-3 border whitespace-nowrap	 text-center" colSpan={10} > <b>Loading .......</b>  </td>
+                      </tr>
+                    ) : null
+                  }
 
                   {
                     sellers.filter((list) => list.sellerType.toLowerCase() === 'active')
