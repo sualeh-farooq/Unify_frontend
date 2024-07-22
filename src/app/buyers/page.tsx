@@ -7,9 +7,11 @@ import SettingBoxes from "@/components/SettingBoxes";
 import ButtonDefault from "@/components/Buttons/ButtonDefault";
 import DropdownDefault from "@/components/Dropdowns/DropdownDefault";
 import BuyerModal from '@/components/Modals/buyerModal'
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SellerModal from "@/components/Modals/sellerModal";
 
+import { ToastContainer } from "react-toastify";
+import baseURL from "@/config/serverConfig";
 
 
 
@@ -18,10 +20,31 @@ import SellerModal from "@/components/Modals/sellerModal";
 //     description: "This is Next.js Settings page for NextAdmin Dashboard Kit",
 // };
 
+interface Buyer {
+    _id: string;
+    name: string;
+    email: string;
+    phone: string;
+    budget: string;
+    interest: string;
+    agreement: string;
+    broker: number;
+    buyerType: string;
+    __v: number;
+}
+
+
+async function BuyerData() {
+    const response = await fetch(`${baseURL}/api/admin/getBuyer`)
+    const result = response.json()
+    return result
+}
+
 const Settings = () => {
 
-    const [buyerModal , setBuyerModal] = useState(false)
-
+    const [buyerModal, setBuyerModal] = useState(false)
+    const [buyersList, setBuyersList] = useState<Buyer[]>([])
+    const [isLoading, setIsLoading] = useState(false)
     const actionDropdown = [
         {
             icon: <svg
@@ -61,7 +84,7 @@ const Settings = () => {
                 <path
                     fillRule="evenodd"
                     clipRule="evenodd"
-                    d="M7.73202 1.68751H10.2681C10.4304 1.68741 10.5718 1.68732 10.7053 1.70864C11.2328 1.79287 11.6892 2.12186 11.9359 2.59563C11.9984 2.71555 12.043 2.84971 12.0942 3.00371L12.1779 3.25488C12.1921 3.2974 12.1962 3.30943 12.1996 3.31891C12.3309 3.682 12.6715 3.92745 13.0575 3.93723C13.0676 3.93748 13.08 3.93753 13.1251 3.93753H15.3751C15.6857 3.93753 15.9376 4.18937 15.9376 4.50003C15.9376 4.81069 15.6857 5.06253 15.3751 5.06253H2.625C2.31434 5.06253 2.0625 4.81069 2.0625 4.50003C2.0625 4.18937 2.31434 3.93753 2.625 3.93753H4.87506C4.9201 3.93753 4.93253 3.93749 4.94267 3.93723C5.32866 3.92745 5.66918 3.68202 5.80052 3.31893C5.80397 3.30938 5.80794 3.29761 5.82218 3.25488L5.90589 3.00372C5.95711 2.84973 6.00174 2.71555 6.06419 2.59563C6.3109 2.12186 6.76735 1.79287 7.29482 1.70864C7.42834 1.68732 7.56973 1.68741 7.73202 1.68751ZM6.75611 3.93753C6.79475 3.86176 6.82898 3.78303 6.85843 3.70161C6.86737 3.67689 6.87615 3.65057 6.88742 3.61675L6.96227 3.39219C7.03065 3.18706 7.04639 3.14522 7.06201 3.11523C7.14424 2.95731 7.29639 2.84764 7.47222 2.81957C7.50561 2.81423 7.55027 2.81253 7.76651 2.81253H10.2336C10.4499 2.81253 10.4945 2.81423 10.5279 2.81957C10.7037 2.84764 10.8559 2.95731 10.9381 3.11523C10.9537 3.14522 10.9695 3.18705 11.0379 3.39219L11.1127 3.61662L11.1417 3.70163C11.1712 3.78304 11.2054 3.86177 11.244 3.93753H6.75611Z"
+                    d="M7.73202 1.68751H10.2    681C10.4304 1.68741 10.5718 1.68732 10.7053 1.70864C11.2328 1.79287 11.6892 2.12186 11.9359 2.59563C11.9984 2.71555 12.043 2.84971 12.0942 3.00371L12.1779 3.25488C12.1921 3.2974 12.1962 3.30943 12.1996 3.31891C12.3309 3.682 12.6715 3.92745 13.0575 3.93723C13.0676 3.93748 13.08 3.93753 13.1251 3.93753H15.3751C15.6857 3.93753 15.9376 4.18937 15.9376 4.50003C15.9376 4.81069 15.6857 5.06253 15.3751 5.06253H2.625C2.31434 5.06253 2.0625 4.81069 2.0625 4.50003C2.0625 4.18937 2.31434 3.93753 2.625 3.93753H4.87506C4.9201 3.93753 4.93253 3.93749 4.94267 3.93723C5.32866 3.92745 5.66918 3.68202 5.80052 3.31893C5.80397 3.30938 5.80794 3.29761 5.82218 3.25488L5.90589 3.00372C5.95711 2.84973 6.00174 2.71555 6.06419 2.59563C6.3109 2.12186 6.76735 1.79287 7.29482 1.70864C7.42834 1.68732 7.56973 1.68741 7.73202 1.68751ZM6.75611 3.93753C6.79475 3.86176 6.82898 3.78303 6.85843 3.70161C6.86737 3.67689 6.87615 3.65057 6.88742 3.61675L6.96227 3.39219C7.03065 3.18706 7.04639 3.14522 7.06201 3.11523C7.14424 2.95731 7.29639 2.84764 7.47222 2.81957C7.50561 2.81423 7.55027 2.81253 7.76651 2.81253H10.2336C10.4499 2.81253 10.4945 2.81423 10.5279 2.81957C10.7037 2.84764 10.8559 2.95731 10.9381 3.11523C10.9537 3.14522 10.9695 3.18705 11.0379 3.39219L11.1127 3.61662L11.1417 3.70163C11.1712 3.78304 11.2054 3.86177 11.244 3.93753H6.75611Z"
                     fill=""
                 />
                 <path
@@ -84,8 +107,18 @@ const Settings = () => {
     ]
 
 
-    const catchData = async () =>{
+    useEffect(() => {
+        async function fetchBuyerData() {
+            setIsLoading(true)
+            const buyerData = await BuyerData()
+            setBuyersList(buyerData.data)
+            setIsLoading(false)
+        }
+        fetchBuyerData()
+    }, [])
 
+    const catchData = async (data: any) => {
+    setBuyersList([...buyersList , data.data.data])
     }
     return (
         <>
@@ -96,7 +129,7 @@ const Settings = () => {
                         <div className="pb-3 border-b flex justify-between" >
                             <div>
                                 <ButtonDefault
-                                functionClick={()=>setBuyerModal(!buyerModal)}
+                                    functionClick={() => setBuyerModal(!buyerModal)}
                                     label="New Buyer"
                                     customClasses="active-sidebar-menu hover:bg-red text-white rounded-[5px] px-10 py-3.5 lg:px-8 xl:px-10"
                                 />
@@ -107,11 +140,6 @@ const Settings = () => {
                             <h4 className="mb-5.5 text-body-2xlg font-extrabold text-primary">
                                 Buyers Mandate
                             </h4>
-
-
-
-
-
                             <table className="w-full table-bordered text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                                 <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                     <tr>
@@ -146,112 +174,61 @@ const Settings = () => {
                                 </thead>
                                 <tbody>
 
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+
+                                    {
+                                        isLoading ? (
+                                            <>
+                                                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                                                    <th colSpan={5} scope="row" className="px-6 py-3 border border-left-primary font-medium  text-center text-gray-900 whitespace-nowrap dark:text-white">
+                                                        Loading ....
+                                                    </th>
+                                                </tr>
+                                            </>
+                                        ) : null
+                                    }
 
 
-                                        <th scope="row" className="px-6 py-3 border border-left-primary font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Devone Lane
-                                        </th>
-                                        <td className="px-6 py-3 border">
-                                            devon@gmail.com
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            2345678
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            Accesories Business
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            Automotive
-                                        </td>
-                                        <td className="px-6 py-3 border" >
+                                    {
+                                        buyersList.filter((data) => data.buyerType === 'mandate').map((val, index) => {
+                                            return (
+                                                <>
+                                                    <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
 
-                                            John Henry
-                                        </td>
+                                                        <th scope="row" className="px-6 py-3 border border-left-primary font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                                            {val.name}
+                                                        </th>
+                                                        <td className="px-6 py-3 border">
+                                                            {val.email}
+                                                        </td>
+                                                        <td className="px-6 py-3 border">
+                                                            {val.phone}
+                                                        </td>
+                                                        <td className="px-6 py-3 border">
+                                                            {val.budget}
+                                                        </td>
+                                                        <td className="px-6 py-3 border">
+                                                            {val.interest}
+                                                        </td>
+                                                        <td className="px-6 py-3 border" >
+                                                            {val.broker}
+                                                        </td>
 
-                                        <td className="px-6 py-3 border" >
+                                                        <td className="px-6 py-3 border" >
 
-                                            <ButtonDefault
-                                                label="Download"
+                                                            <ButtonDefault
+                                                                label="Download"
 
-                                                customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                                            />
-                                        </td>
-                                        <td className="px-6 py-3 border" >
-                                            <DropdownDefault actions={actionDropdown} />
-                                        </td>
-                                    </tr>
-
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-                                        <th scope="row" className="px-6 py-3 border border-left-primary font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Devone Lane
-                                        </th>
-                                        <td className="px-6 py-3 border">
-                                            devon@gmail.com
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            2345678
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            Accesories Business
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            Automotive
-                                        </td>
-                                        <td className="px-6 py-3 border" >
-
-                                            John Henry
-                                        </td>
-
-                                        <td className="px-6 py-3 border" >
-
-                                            <ButtonDefault
-                                                label="Download"
-                                                customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                                            />
-                                        </td>
-                                        <td className="px-6 py-3 border" >
-                                            <DropdownDefault actions={actionDropdown} />
-                                        </td>
-                                    </tr>
-
-                                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-
-
-                                        <th scope="row" className="px-6 py-3 border border-left-primary font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            Devone Lane
-                                        </th>
-                                        <td className="px-6 py-3 border">
-                                            devon@gmail.com
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            2345678
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            Accesories Business
-                                        </td>
-                                        <td className="px-6 py-3 border">
-                                            Automotive
-                                        </td>
-                                        <td className="px-6 py-3 border" >
-
-                                            John Henry
-                                        </td>
-
-                                        <td className="px-6 py-3 border" >
-
-                                            <ButtonDefault
-                                                label="Download"
-
-                                                customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
-                                            />
-                                        </td>
-                                        <td className="px-6 py-3 border" >
-                                            <DropdownDefault actions={actionDropdown} />
-                                        </td>
-                                    </tr>
+                                                                customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
+                                                            />
+                                                        </td>
+                                                        <td className="px-6 py-3 border" >
+                                                            <DropdownDefault actions={actionDropdown} />
+                                                        </td>
+                                                    </tr>
+                                                </>
+                                            )
+                                        })
+                                    }
 
 
 
@@ -377,7 +354,7 @@ const Settings = () => {
 
                                             <ButtonDefault
                                                 label="Download"
-                                               
+
                                                 customClasses="border border-primary text-primary rounded-[5px] px-2 py-2 lg:px-4 xl:px-4"
                                             />
                                         </td>
@@ -396,9 +373,23 @@ const Settings = () => {
                     </div>
                 </div>
 
-<BuyerModal modalOpen={buyerModal} sendDataToParent={catchData} setModalOpen={()=>setBuyerModal(!buyerModal)} />
+                <BuyerModal modalOpen={buyerModal} sendDataToParent={catchData} setModalOpen={() => setBuyerModal(!buyerModal)} />
 
-{/* 
+
+                <ToastContainer
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar={false}
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover={false}
+                    theme="light"
+                />
+
+                {/* 
                 <SellerModal  modalOpen={sellerModal} setModalOpen={() => setSellerModal(!sellerModal)} />
         <ToastContainer
           position="top-center"

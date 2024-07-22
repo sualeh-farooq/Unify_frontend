@@ -78,7 +78,6 @@ export default function NewListing() {
                     position: "top-center"
                 });
             }).catch((err) => console.log(err))
-            console.log(response)
         } catch (error) {
             console.log(`Something went wrong ${error}`);
         }

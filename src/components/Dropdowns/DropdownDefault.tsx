@@ -39,7 +39,7 @@ const DropdownDefault = (props: any) => {
             className={`absolute right-0 top-full z-40 w-46.5 space-y-1.5 rounded-[7px] border border-stroke bg-white p-2 shadow-2 dark:border-dark-3 dark:bg-dark-2 dark:shadow-card`}
           >
             {props.actions.map((val: any, index: any, arr: any ) => {
-              console.log(val)
+              // console.log(val)
 
               return (
                 <>
