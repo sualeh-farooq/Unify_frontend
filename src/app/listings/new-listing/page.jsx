@@ -7,7 +7,7 @@ import Uploader from "@/components/FileUploader/uploader"
 import { useEffect, useState } from "react";
 import axios from 'axios'
 import baseUrl from '@/config/serverConfig'
-import {toast , ToastContainer} from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 import Link from "next/link"
 
 async function getPageData() {
@@ -19,7 +19,7 @@ async function getPageData() {
 export default function NewListing() {
 
     const [dealName, setDealName] = useState('')
-    const [status , setStatus] = useState('')
+    const [status, setStatus] = useState('')
     const [askingPrice, setAskingPrice] = useState('')
     const [commision, setCommision] = useState('')
     const [funds, setFunds] = useState('')
@@ -65,7 +65,7 @@ export default function NewListing() {
         formData.append('listingPhoto', listingPhoto);
         formData.append('agencyAgreement', agreement);
         formData.append('im', im);
-        formData.append('status' , status)
+        formData.append('status', status)
         formData.append('webAd', webAd);
         try {
             const response = await axios.post(`${baseUrl}/api/admin/addListing`, formData, {
@@ -90,7 +90,6 @@ export default function NewListing() {
         }
         fetchData()
     }, [])
-
 
     return (
         <>
@@ -492,15 +491,15 @@ export default function NewListing() {
             `}
                                         >
                                             <option value="Pending" className="text-dark-5 dark:text-dark-6">
-                                               Pending
+                                                Pending
                                             </option>
                                             <option value="Active" className="text-dark-5 dark:text-dark-6">
-                                               Active
+                                                Active
                                             </option>
                                             <option value="Sold" className="text-dark-5 dark:text-dark-6">
                                                 Sold
                                             </option>
-                                            
+
                                         </select>
 
                                         <span className="absolute right-4.5 top-1/2 z-10 -translate-y-1/2 text-dark-4 dark:text-dark-6">
